@@ -1,5 +1,6 @@
 package com.DonationBackend.cntr;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,11 @@ public class RecipientRestController {
 	@GetMapping(value= {"/selectVerifiedRecipients"})
 	public List<Recipient> listOfVerifiedRecipients(){
 		
-		return recipientService.getApprovedRecipients();
+		List<Recipient> list = recipientService.getApprovedRecipients();
+		
+		Collections.sort(list);
+		
+		return list;
 	}
 	
 	@PostMapping(value = {"/updateDemands"})

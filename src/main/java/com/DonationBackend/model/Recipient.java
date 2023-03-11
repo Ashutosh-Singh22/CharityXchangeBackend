@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Recipient {
+public class Recipient implements Comparable<Recipient> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int recipientId;
@@ -130,5 +130,26 @@ public class Recipient {
 				+ rawFoodQuantityReceived + ", clothesQuantityRequired=" + clothesQuantityRequired
 				+ ", clothesQuantityReceived=" + clothesQuantityReceived + ", stationaryQuantityRequired="
 				+ stationaryQuantityRequired + ", stationaryQuantityReceived=" + stationaryQuantityReceived + "]";
+	}
+	@Override
+	public int compareTo(Recipient obj) {
+		
+		//comparing based on Total QuantityRequired - Total QuantityReceived
+		
+		int thisTotalQuantityRequired = this.getRawFoodQuantityRequired() + this.getClothesQuantityRequired() + this.getStationaryQuantityRequired();
+		int thisTotalQuantityReceived = this.getRawFoodQuantityReceived() + this.getClothesQuantityReceived() + this.getStationaryQuantityReceived();
+		int thisDiff = thisTotalQuantityRequired - thisTotalQuantityReceived;
+		
+		int objTotalQuantityRequired = obj.getRawFoodQuantityRequired() + obj.getClothesQuantityRequired() + obj.getStationaryQuantityRequired();
+		int objTotalQuantityReceived = obj.getRawFoodQuantityReceived() + obj.getClothesQuantityReceived() + obj.getStationaryQuantityReceived();
+		int objDiff = objTotalQuantityRequired - objTotalQuantityReceived;
+		
+		
+		if(thisDiff - objDiff > 0)
+			return -1;
+		else if(thisDiff - objDiff < 0)
+			return 1;
+		else
+			return 0;
 	}
 }
